@@ -1,0 +1,57 @@
+# Weak network scenarios — tune to your router / Linux gateway with tc netem.
+version: 1
+scenes:
+  - name: baseline
+    latency_ms: 0
+    loss_percent: 0
+    bandwidth_kbps: null
+    adb_tc_hint: ""
+    notes: "No impairment; control run."
+
+  - name: voip_jitter
+    latency_ms: 80
+    loss_percent: 2
+    bandwidth_kbps: 2000
+    adb_tc_hint: "tc qdisc add dev wlan0 root netem delay 80ms 10ms loss 2%"
+    notes: "Approximate VoIP-like jitter on gateway (requires root / correct iface)."
+
+  - name: iot_sparse
+    latency_ms: 300
+    loss_percent: 5
+    bandwidth_kbps: 256
+    adb_tc_hint: "tc qdisc add dev wlan0 root netem delay 300ms loss 5% rate 256kbit"
+    notes: "Low-rate IoT uplink; validate reconnect / MQTT keepalive if applicable."
+
+  - name: burst_loss
+    latency_ms: 50
+    loss_percent: 15
+    bandwidth_kbps: null
+    adb_tc_hint: "tc qdisc add dev wlan0 root netem loss 15%"
+    notes: "Stress WiFi driver / supplicant recovery."
+
+
+# AI 弱网场景参数配置
+weaknet_scenes:
+  subway:
+    signal_min: -90
+    signal_max: -60
+    packet_loss: 10
+    delay_ms: 80
+
+  elevator:
+    signal_min: -95
+    signal_max: -70
+    packet_loss: 25
+    delay_ms: 150
+
+  basement:
+    signal_min: -100
+    signal_max: -80
+    packet_loss: 30
+    delay_ms: 200
+
+  market:
+    signal_min: -75
+    signal_max: -50
+    packet_loss: 5
+    delay_ms: 50

@@ -1,0 +1,66 @@
+{
+  "ap_config": {
+    "ap_ip": "192.168.2.1",
+    "ap_login_username": "test",
+    "ap_login_password": "",
+    "ap_flag": "<AirEngine9700S-S-2024>",
+    "ap_id": 0,
+    "vap_profile": "PyAutoTest",
+    "service_vlan": 2,
+    "wlan_id": 14
+  },
+  "miniAP_config": {
+    "miniAP_ip": "192.168.2.200",
+    "miniAP2_ip": "192.168.2.201",
+    "miniAP_root": "root",
+    "miniAP_login_password": "",
+    "miniAP_flag": "admin@AP"
+  },
+  "attenuator_device": {
+    "host": "192.168.1.18",
+    "port": 50000,
+    "timeout_sec": 5,
+    "max_attenuation_db": 122
+  },
+  "attenuator_channels": {
+    "mini_ap_1_channel": 13,
+    "traditional_ap_1_channel": 14,
+    "mini_ap_2_channel": 15,
+    "traditional_ap_2_channel": 16
+  },
+  "dut_info": {
+    "eth_ip": "192.168.2.129",
+    "serial_A": "",
+    "serial_B": ""
+  },
+  "android": {
+    "serial": "",
+    "comment": "若填写则优先于 .env 的 ANDROID_SERIAL（仅当环境变量未设置时合并）"
+  },
+  "performance": {
+    "iperf_server":  "192.168.2.3",
+    "iperf_duration_sec": 30,
+    "iperf_runs": 3,
+    "iperf_parallel_streams": 1,
+    "traditional_iperf_parallel_streams": 16,
+    "iperf_protocols": "tcp,udp",
+    "udp_bandwidth": "100M",
+    "min_mbps": 1,
+    "ping_host": "",
+    "ping_count": 30,
+    "ping_big_size": 1520,
+    "ping_small_size": 64
+  },
+  "scenario_tuning": {
+    "wifi_connect_wait_sec": 15,
+    "wifi_stress_cycles": 5,
+    "country_code_stress_cycles": 1000,
+    "country_code_halow_ready_timeout_sec": 30
+  },
+  "adb_timeout_sec": null,
+  "artifacts": {
+    "html_report": "reports/html/report.html",
+    "allure_results": "reports/allure/raw",
+    "log_file": "reports/log/automation.log"
+  }
+}

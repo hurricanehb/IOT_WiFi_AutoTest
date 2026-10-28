@@ -1,0 +1,445 @@
+# 传统WiFi + HyperWiFi (EU/US) + dual_wifi_list + 中文SSID + 加密方式
+# 共享值只在此处维护；下方通过 YAML 锚点复用，变更实验室名称或默认密码无需逐项修改。
+wifi_test_values:
+  common_password: &common_password "24681357"
+  default_traditional_ssid: &default_traditional_ssid  "MyXiaoMiWiFi" #"Lab_HW_AutoTest"
+  hyperwifi_eu_ssid: &hyperwifi_eu_ssid "HyperWi-Fi_EU"
+  hyperwifi_lab_miniap1_ssid: &hyperwifi_lab_miniap1_ssid "Lab_AT1_HyperWiFi_test_2"
+  welcome_encrypted_ssid: &welcome_encrypted_ssid "MyXiaoMiWiFi" #"Lab_HW_AutoTest"  
+  welcome_open_ssid: &welcome_open_ssid "Public_Free"
+  welcome_hyperwifi_ssid: &welcome_hyperwifi_ssid "Lab_AT1_HyperWiFi_test_2" #"HyperWi-Fi_3C74_Office"  #
+
+wifi_list:
+  # --------------- 传统WiFi ---------------
+  # 双频合一（AP0 radio0 ch1 + radio1 ch36，同名同 BSSID 前缀，wlan 13）
+  - id: "wifi_ap_ssid_default"
+    ssid: *default_traditional_ssid
+    pwd: *common_password
+    encrypt: "WPA2"
+    bssids:
+      2g: "54:f6:e2:e9:4a:4c"
+      5g: "54:f6:e2:e9:4a:5c"
+    type: "normal"
+    region: ""
+    expect: "connected"
+
+  - id: "wifi_signal_level_traditional_ap1"
+    ssid: "Lab_HW_WPA/WPA2_Test"
+    pwd: *common_password
+    encrypt: "WPA2"
+    bssids:
+      2g: "54:f6:e2:e9:4a:47"
+      5g: "54:f6:e2:e9:4a:57"
+    type: "normal"
+    region: ""
+    expect: "connected"
+
+  - id: "wifi_wep40_lab"
+    ssid: "Lab_HW_WEP-40_Test"
+    password_env: "WIFI_WEP40_PASSWORD"
+    encrypt: "WEP"
+    type: "normal"
+    region: ""
+    expect: "connected"
+
+  - id: "wifi_wep104_lab"
+    ssid: "Lab_HW_WEP-104_Test"
+    password_env: "WIFI_WEP104_PASSWORD"
+    encrypt: "WEP"
+    type: "normal"
+    region: ""
+    expect: "connected"
+
+  - id: "wifi_wep128_lab"
+    ssid: "Lab_HW_WEP-128_Test"
+    password_env: "WIFI_WEP128_PASSWORD"
+    encrypt: "WEP"
+    type: "normal"
+    region: ""
+    expect: "connected"
+
+  - ssid: "小米路由器_客厅"  # GBK中文SSID
+    pwd: "86427531"
+    encrypt: "WPA2"
+    type: "normal"
+    region: ""
+    expect: "connected"
+
+  - ssid: "Public_Free"
+    pwd: ""
+    encrypt: "OPEN"
+    type: "normal"
+    region: ""
+    expect: "connected"
+
+  - id: "wifi_owe_transition"
+    ssid: "Lab_HW_OWE_Test"
+    pwd: ""
+    lab_flag: "OWE_TRANSITION_LAB"
+    encrypt: "OWE"
+    type: "normal"
+    region: ""
+    expect: "connected"
+
+  # --------------- HyperWiFi EU 区 ---------------
+  - id: "hyperwifi_eu"
+    ssid: *hyperwifi_eu_ssid
+    pwd: *common_password
+    encrypt: "WPA3"
+    type: "hyperwifi"
+    region: "EU"
+    expect: "connected"
+
+  # --------------- HyperWiFi US 区 ---------------
+  - id: "hyperwifi_us"
+    ssid: "HyperWi-Fi_US"
+    pwd: *common_password
+    encrypt: "WPA3"
+    type: "hyperwifi"
+    region: "US"
+    expect: "connected"
+
+  - id: "hyperwifi_lab_miniap1"
+    ssid: *hyperwifi_lab_miniap1_ssid
+    pwd: *common_password
+    encrypt: "WPA3"
+    type: "hyperwifi"
+    region: "US"
+    expect: "connected"
+
+  - id: "hyperwifi_lab_miniap2"
+    ssid: "Lab_AT1_HyperWiFi_test_2"
+    pwd: *common_password
+    encrypt: "WPA3"
+    type: "hyperwifi"
+    region: "US"
+    expect: "connected"
+
+  # --------------- 失败用例 ---------------
+  - ssid: *hyperwifi_eu_ssid
+    pwd: "wrongpass"
+    encrypt: "WPA3"
+    type: "hyperwifi"
+    region: "EU"
+    expect: "auth_fail"
+
+  # --------------- Welcome 组件指定网络 ---------------
+  # ConnCfg、NetDetails 共用同一加密网络及密码。
+  - id: "welcome_connection_wpa2"
+    ssid: *welcome_encrypted_ssid
+    pwd: *common_password
+    encrypt: "WPA2"
+    type: "normal"
+    region: ""
+    expect: "connected"
+
+  - id: "welcome_connection_open"
+    ssid: *welcome_open_ssid
+    pwd: ""
+    encrypt: "OPEN"
+    type: "normal"
+    region: ""
+    expect: "connected"
+
+  - id: "welcome_hyperwifi"
+    ssid: *welcome_hyperwifi_ssid
+    pwd: *common_password
+    encrypt: "WPA3"
+    type: "hyperwifi"
+    region: "US"
+    expect: "connected"
+
+# 信号等级实验室拓扑：profile 引用已有连接数据，通道由 attenuator_channels 决定。
+signal_level_lab:
+  traditional_entry_id: "wifi_signal_level_traditional_ap1"
+  hyper_dual_entry_id: "dual_wifi_24g_hyperwifi_us"
+  ap_index: 1
+
+# 产品 PAT 基线由性能团队按 case_id 提供。未配置时先执行两组数据采集，
+# 不使用通用吞吐阈值冒充产品曲线基线。
+performance_pat: {}
+
+# IP 配置实验室拓扑（Func_WlanAccess_Conn_IPCfg_*）。
+ipcfg_lab:
+  ap1:
+    ssid: *default_traditional_ssid
+    expected_network: "192.168.2.0/24"
+    gateway: "192.168.2.1"
+    dns: ["114.114.114.114", "223.5.5.5"]
+  # 启用续租和双 AP 更新用例时，补充 lease_wait_sec 和 ap2。
+  # ap2:
+  #   ssid: "LAB_IPCFG_AP2"
+  #   expected_network: "192.168.2.0/24"
+  #   gateway: "192.168.2.1"
+  #   dns: ["192.168.2.1"]
+
+# 双 WiFi 场景：传统 WiFi + HyperWiFi 成对（同时连接 / 后置断开校验）
+# 传统腿用双频合一 Lab_HW_AutoTest（2.4G ch1 + 5G ch36）；ch1 在所有管制域均开放，
+# 国家码遍历时至少 2.4G 腿不会被射频规则滤除。
+dual_wifi_list:
+  - id: "dual_wifi_24g_hyperwifi_us"
+    description: "wifi 双频合一 + HyperWiFi US"
+    traditional_wifi:
+      ssid: *default_traditional_ssid
+      pwd: *common_password
+      encrypt: "WPA2"
+      type: "normal"
+      region: ""
+      expect: "connected"
+    hyper_wifi:
+      ssid: *hyperwifi_lab_miniap1_ssid
+      pwd: *common_password
+      encrypt: "WPA3"
+      type: "hyperwifi"
+      region: "US"
+      expect: "connected"
+
+  - id: "dual_wifi_24g_hyperwifi_eu"
+    description: "wifi 双频合一 + hyperWiFi EU"
+    traditional_wifi:
+      ssid: *default_traditional_ssid
+      pwd: *common_password
+      encrypt: "WPA2"
+      type: "normal"
+      region: ""
+      expect: "connected"
+    hyper_wifi:
+      ssid: *hyperwifi_eu_ssid
+      pwd: *common_password
+      encrypt: "WPA3"
+      type: "hyperwifi"
+      region: "EU"
+      expect: "connected"
+
+
+
+# 企业802.1X WiFi
+enterprise_wifi:
+  ssid: "Office_8021X"
+  username: "test01"
+  password: "demo@123"
+  encrypt: "8021X"
+  type: "normal"
+  region: ""
+  expect: "connected"
+
+# SSID/密码字符用例（Func_WlanAccess_Conn_SsidPwd_*）
+# AP 侧 SSID/密码须与实验室陪测 AP 一致；用例内通过 entry_id 引用
+ssid_pwd_defaults:
+  security: "WPA2"
+  ap_type: "normal"
+  expected_result: "connected"
+
+# 可复用语义配置：key 描述数据特征，不绑定具体测试用例编号。
+ssid_pwd_profiles:
+  scanner_default:
+    description: "扫码连接默认 WPA2 网络"
+    ssid: "Lab_HW_QR_Scanner"
+    password: *common_password
+
+  welcome_ssid_ascii_display:
+    description: "Welcome WLAN 列表英文 SSID"
+    ssid: "helloworld"
+    password: *common_password
+
+  welcome_ssid_numeric_display:
+    description: "Welcome WLAN 列表数字 SSID"
+    ssid: "1008610086"
+    password: *common_password
+
+  ssid_ascii_min_password_min:
+    description: "SSID 1 位 ASCII 字符，密码 8 位"
+    ssid: "a"
+    password: "qwertyui"
+
+  ssid_mixed_chars_16:
+    description: "SSID 和密码包含中英文、空格及引号"
+    ssid: '12 /"测试''Test'
+    password: '12345 Test/"''~!@'
+
+  ssid_special_chars_32:
+    description: "SSID 和密码为 32 位特殊字符"
+    ssid: '~!@#$%^&*()_+-={}|[]\:";''<>?,./'
+    password: '~!@#$%^&*()_+-={}|[]\:";''<>?,./'
+
+  ssid_numeric_32_password_64:
+    description: "32 位数字 SSID，64 位数字密码"
+    ssid: "12345678901234567890123456789012"
+    password: "1234567890123456789012345678901234567890123456789012345678901234"
+
+  ssid_symbol_mixed_32_password_64:
+    description: "SSID 和密码为包含符号的最大长度组合"
+    ssid: '12345678acas?:"7890123456789012'
+    password: '12345678acas?:"789012345678901212345678acas?:"7890123456789012'
+
+  ssid_space_padded:
+    description: "SSID 和密码首尾包含空格"
+    ssid: " Test Test "
+    password: " Test Test "
+
+  ssid_nonexistent:
+    description: "用于验证保存后无法关联的不存在 SSID"
+    ssid: "PyAutoTest_Nonexistent_Network"
+    password: *common_password
+
+  ssid_utf8_chinese_10:
+    description: "UTF-8 编码的 10 个中文字符 SSID"
+    ssid: "哈哈哈哈哈哈哈哈哈哈"
+    password: *common_password
+    ssid_encoding: "utf-8"
+
+  ssid_gbk_chinese_16:
+    description: "GBK 编码的 16 个中文字符 SSID"
+    ssid: "测试网络科技集团有限责任公司甲乙"
+    password: *common_password
+    ssid_encoding: "gbk"
+
+  ssid_shift_jis_japanese_16:
+    description: "Shift_JIS 编码的 16 个日文字符 SSID"
+    ssid: "あいうえおかきくけこさしすせそた"
+    password: *common_password
+    ssid_encoding: "shift_jis"
+
+  ssid_cp949_korean:
+    description: "CP949 编码的韩文 SSID"
+    ssid: "한글테스트네트워크명"
+    password: *common_password
+    ssid_encoding: "cp949"
+
+  ssid_numeric_min:
+    description: "SSID 1 位数字字符，密码 8 位"
+    ssid: "0"
+    password: *common_password
+
+  ssid_mixed_chars_16_alt:
+    description: "16 位中英文、数字及符号组合 SSID"
+    ssid: "A1b测试!@#Mix16X"
+    password: "P1ss!@#Mix16Chars"
+
+  ssid_special_chars_escaped:
+    description: "SSID 和密码包含反斜杠及完整特殊字符集"
+    ssid: '~!@#$%^&*()_+-={}|[]\\:";''<>?,./'
+    password: '~!@#$%^&*()_+-={}|[]\\:";''<>?,./'
+
+  ssid_ascii_max_password_max:
+    description: "32 位 ASCII SSID，64 位 ASCII 密码"
+    ssid: "abcdefghijklmnopqrstuvwxyz123456"
+    password: "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijkl"
+
+  ssid_cjk_phrase:
+    description: "中文短语 SSID"
+    ssid: "小表情"
+    password: *common_password
+
+  ssid_spaces_only:
+    description: "SSID 仅包含 1 个空格，密码为 8 个空格"
+    ssid: " "
+    password: "        "
+
+  ssid_utf8_chinese_min:
+    description: "UTF-8 编码的 1 个中文字符 SSID"
+    ssid: "哈"
+    password: *common_password
+    ssid_encoding: "utf-8"
+
+  ssid_gbk_chinese_min:
+    description: "GBK 编码的 1 个中文字符 SSID"
+    ssid: "哈"
+    password: *common_password
+    ssid_encoding: "gbk"
+
+  ssid_shift_jis_japanese_min:
+    description: "Shift_JIS 编码的 1 个日文字符 SSID"
+    ssid: "あ"
+    password: *common_password
+    ssid_encoding: "shift_jis"
+
+  ssid_shift_jis_japanese_15:
+    description: "Shift_JIS 编码的 15 个日文字符 SSID"
+    ssid: "あいうえおかきくけこさしすせそ"
+    password: *common_password
+    ssid_encoding: "shift_jis"
+
+  ssid_cp949_korean_min:
+    description: "CP949 编码的 1 个韩文字符 SSID"
+    ssid: "한"
+    password: *common_password
+    ssid_encoding: "cp949"
+
+  ssid_utf8_roaming_ap1:
+    description: "UTF-8 编码双 AP 场景的 AP1"
+    ssid: "UTF8测试网络一"
+    password: *common_password
+    ssid_encoding: "utf-8"
+
+  ssid_utf8_roaming_ap2:
+    description: "UTF-8 编码双 AP 场景的 AP2"
+    ssid: "UTF8测试网络二"
+    password: *common_password
+    ssid_encoding: "utf-8"
+
+  ssid_gbk_roaming_ap1:
+    description: "GBK 编码双 AP 场景的 AP1"
+    ssid: "GBK测试网络一"
+    password: *common_password
+    ssid_encoding: "gbk"
+
+  ssid_gbk_roaming_ap2:
+    description: "GBK 编码双 AP 场景的 AP2"
+    ssid: "GBK测试网络二"
+    password: *common_password
+    ssid_encoding: "gbk"
+
+  ssid_shift_jis_roaming_ap1:
+    description: "Shift_JIS 编码双 AP 场景的 AP1"
+    ssid: "テストネット1"
+    password: *common_password
+    ssid_encoding: "shift_jis"
+
+  ssid_shift_jis_roaming_ap2:
+    description: "Shift_JIS 编码双 AP 场景的 AP2"
+    ssid: "テストネット2"
+    password: *common_password
+    ssid_encoding: "shift_jis"
+
+  ssid_cp949_roaming_ap1:
+    description: "CP949 编码双 AP 场景的 AP1"
+    ssid: "테스트망1"
+    password: *common_password
+    ssid_encoding: "cp949"
+
+  ssid_cp949_roaming_ap2:
+    description: "CP949 编码双 AP 场景的 AP2"
+    ssid: "테스트망2"
+    password: *common_password
+    ssid_encoding: "cp949"
+
+  ssid_utf8_qr:
+    description: "UTF-8 编码二维码配网 SSID"
+    ssid: "UTF8二维码测试"
+    password: *common_password
+    ssid_encoding: "utf-8"
+
+  ssid_gbk_qr:
+    description: "GBK 编码二维码配网 SSID"
+    ssid: "GBK二维码测试"
+    password: *common_password
+    ssid_encoding: "gbk"
+
+  ssid_shift_jis_qr:
+    description: "Shift_JIS 编码二维码配网 SSID"
+    ssid: "QRテスト"
+    password: *common_password
+    ssid_encoding: "shift_jis"
+
+  ssid_cp949_qr:
+    description: "CP949 编码二维码配网 SSID"
+    ssid: "QR테스트"
+    password: *common_password
+    ssid_encoding: "cp949"
+
+  ssid_utf8_encoding_switch:
+    description: "UTF-8 编码切换场景 SSID"
+    ssid: "编码切换测试"
+    password: *common_password
+    ssid_encoding: "utf-8"

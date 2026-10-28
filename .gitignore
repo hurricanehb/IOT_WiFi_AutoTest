@@ -1,0 +1,17 @@
+.env*
+!.env.example
+.venv/
+tools/bin/
+__pycache__/
+*.pyc
+.pytest_cache/
+reports/
+temp/
+*.log
+.idea/
+.vscode/
+*.egg-info/
+dist/
+build/
+.DS_Store
+Thumbs.db

@@ -1,0 +1,17 @@
+{
+  "active": "test",
+  "profiles": {
+    "dev": {
+      "description": "本地开发调试",
+      "api_base_hint": ""
+    },
+    "test": {
+      "description": "自动化测试默认环境",
+      "api_base_hint": ""
+    },
+    "prod": {
+      "description": "生产只读校验（慎用）",
+      "api_base_hint": ""
+    }
+  }
+}

@@ -1,0 +1,1 @@
+"""Android Wi-Fi device capabilities and reusable scenarios."""

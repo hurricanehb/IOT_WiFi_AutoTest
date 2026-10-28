@@ -1,0 +1,204 @@
+"""WiFi 连接 — Func_AdvWlanSet_Priorty（手工/实验室场景）
+
+静态 pytest 脚本，运行期不读取 md 文档。
+源文档：tools/files-transfer/Android WiFi&HyperWiFi/HyperWiFi低功耗.md, tools/files-transfer/Android WiFi&HyperWiFi/ITR专项.md, tools/files-transfer/Android WiFi&HyperWiFi/MIX机型-USB模式切换.md, tools/files-transfer/Android WiFi&HyperWiFi/WLAN热点.md, tools/files-transfer/Android WiFi&HyperWiFi/WLAN高级设置.md, tools/files-transfer/Android WiFi&HyperWiFi/传统WiFi低功耗.md, tools/files-transfer/Android WiFi&HyperWiFi/兼容性.md, tools/files-transfer/Android WiFi&HyperWiFi/双链路主备切换管理.md, tools/files-transfer/Android WiFi&HyperWiFi/国家码.md, tools/files-transfer/Android WiFi&HyperWiFi/多网络共存.md, tools/files-transfer/Android WiFi&HyperWiFi/性能测试.md, tools/files-transfer/Android WiFi&HyperWiFi/无线接入.md, tools/files-transfer/Android WiFi&HyperWiFi/无线黑名单.md, tools/files-transfer/Android WiFi&HyperWiFi/漫游.md, tools/files-transfer/Android WiFi&HyperWiFi/稳定性测试.md, tools/files-transfer/Android WiFi&HyperWiFi/组件.md, tools/files-transfer/Android WiFi&HyperWiFi/网络选择.md
+"""
+from __future__ import annotations
+
+import pytest
+
+from core.libs.android.wifi_scenarios.advanced_settings.priority import (
+    run_wlan_priority_airplane_toggle_persistence_case,
+    run_wlan_priority_default_case,
+    run_wlan_priority_display_case,
+    run_wlan_priority_options_case,
+    run_wlan_priority_quick_settings_toggle_persistence_case,
+    run_wlan_priority_reboot_persistence_case,
+    run_wlan_priority_settings_toggle_persistence_case,
+)
+from testcases.support.case_api import run_manual_placeholder
+
+
+@pytest.mark.p2
+@pytest.mark.wifi
+@pytest.mark.case_id("Func_AdvWlanSet_Priorty_UI_001")
+@pytest.mark.wifi_case(
+    title="默认UI配置页面检查",
+    pre="STA出厂状态",
+)
+def test_Func_AdvWlanSet_Priorty_UI_001(
+    run_shell_cmd, wifi, wifi_yaml, settings_ui, capsys
+,
+    wifi_case):
+    run_wlan_priority_options_case(settings_ui, capsys)
+
+@pytest.mark.p2
+@pytest.mark.wifi
+@pytest.mark.case_id("Func_AdvWlanSet_Priorty_UI_002")
+@pytest.mark.wifi_case(
+    title="UI默认配置值检查",
+    pre="STA出厂状态",
+)
+def test_Func_AdvWlanSet_Priorty_UI_002(
+    run_shell_cmd, wifi, wifi_yaml, settings_ui, capsys
+,
+    wifi_case):
+    run_wlan_priority_default_case(settings_ui, capsys)
+
+@pytest.mark.p2
+@pytest.mark.wifi
+@pytest.mark.case_id("Func_AdvWlanSet_Priorty_UI_003")
+@pytest.mark.wifi_case(
+    title="优先等级“初级”检查",
+    pre="STA出厂状态",
+)
+def test_Func_AdvWlanSet_Priorty_UI_003(
+    run_shell_cmd, wifi, wifi_yaml, settings_ui, capsys
+,
+    wifi_case):
+    run_wlan_priority_display_case(settings_ui, capsys, '初级')
+
+@pytest.mark.p2
+@pytest.mark.wifi
+@pytest.mark.case_id("Func_AdvWlanSet_Priorty_UI_004")
+@pytest.mark.wifi_case(
+    title="优先等级“中级”检查",
+    pre="STA出厂状态",
+)
+def test_Func_AdvWlanSet_Priorty_UI_004(
+    run_shell_cmd, wifi, wifi_yaml, settings_ui, capsys
+,
+    wifi_case):
+    run_wlan_priority_display_case(settings_ui, capsys, '中级')
+
+@pytest.mark.p2
+@pytest.mark.wifi
+@pytest.mark.case_id("Func_AdvWlanSet_Priorty_UI_005")
+@pytest.mark.wifi_case(
+    title="优先等级“高级”检查",
+    pre="STA出厂状态",
+)
+def test_Func_AdvWlanSet_Priorty_UI_005(
+    run_shell_cmd, wifi, wifi_yaml, settings_ui, capsys
+,
+    wifi_case):
+    run_wlan_priority_display_case(settings_ui, capsys, '高级')
+
+@pytest.mark.p2
+@pytest.mark.wifi
+@pytest.mark.case_id("Func_AdvWlanSet_Priorty_UI_006")
+@pytest.mark.wifi_case(
+    title="优先等级“普通”检查",
+    pre="STA出厂状态",
+)
+def test_Func_AdvWlanSet_Priorty_UI_006(
+    run_shell_cmd, wifi, wifi_yaml, settings_ui, capsys
+,
+    wifi_case):
+    run_wlan_priority_display_case(settings_ui, capsys, '普通')
+
+@pytest.mark.p2
+@pytest.mark.wifi
+@pytest.mark.case_id("Func_AdvWlanSet_Priorty_Vali_001")
+@pytest.mark.wifi_case(
+    title="优先等级“普通”有效性",
+    pre="1、测试环境：屏蔽房 2、陪测AP：5G/80MHz/149ch；2.4G/40MHz/6ch，SSID为xxx-5G/xxx，密码为24681357/WPA/WPA2混合 3、陪测测试：陪测DUT（与DUT同软件）、台式PC 4、测试软件：chariot",
+)
+def test_Func_AdvWlanSet_Priorty_Vali_001(run_shell_cmd, wifi, wifi_yaml, wifi_case):
+    run_manual_placeholder(wifi_case, run_shell_cmd)
+
+@pytest.mark.p2
+@pytest.mark.wifi
+@pytest.mark.case_id("Func_AdvWlanSet_Priorty_Vali_002")
+@pytest.mark.wifi_case(
+    title="优先等级“初级”有效性",
+    pre="1、测试环境：屏蔽房 2、陪测AP：5G/80MHz/149ch；2.4G/40MHz/6ch，SSID为xxx-5G/xxx，密码为24681357/WPA/WPA2混合 3、陪测测试：陪测DUT（与DUT同软件）、台式PC 4、测试软件：chariot",
+)
+def test_Func_AdvWlanSet_Priorty_Vali_002(run_shell_cmd, wifi, wifi_yaml, wifi_case):
+    run_manual_placeholder(wifi_case, run_shell_cmd)
+
+@pytest.mark.p2
+@pytest.mark.wifi
+@pytest.mark.case_id("Func_AdvWlanSet_Priorty_Vali_003")
+@pytest.mark.wifi_case(
+    title="优先等级“中级”有效性",
+    pre="1、测试环境：屏蔽房 2、陪测AP：5G/80MHz/149ch；2.4G/40MHz/6ch，SSID为xxx-5G/xxx，密码为24681357/WPA/WPA2混合 3、陪测测试：陪测DUT（与DUT同软件）、台式PC 4、测试软件：chariot",
+)
+def test_Func_AdvWlanSet_Priorty_Vali_003(run_shell_cmd, wifi, wifi_yaml, wifi_case):
+    run_manual_placeholder(wifi_case, run_shell_cmd)
+
+@pytest.mark.p2
+@pytest.mark.wifi
+@pytest.mark.case_id("Func_AdvWlanSet_Priorty_Vali_004")
+@pytest.mark.wifi_case(
+    title="优先等级“高级”有效性",
+    pre="1、测试环境：屏蔽房 2、陪测AP：5G/80MHz/149ch；2.4G/40MHz/6ch，SSID为xxx-5G/xxx，密码为24681357/WPA/WPA2混合 3、陪测测试：陪测DUT（与DUT同软件）、台式PC 4、测试软件：chariot",
+)
+def test_Func_AdvWlanSet_Priorty_Vali_004(run_shell_cmd, wifi, wifi_yaml, wifi_case):
+    run_manual_placeholder(wifi_case, run_shell_cmd)
+
+@pytest.mark.p2
+@pytest.mark.wifi
+@pytest.mark.case_id("Func_AdvWlanSet_Priorty_Excp_001")
+@pytest.mark.wifi_case(
+    title="WLAN关闭状态下改配优先等级有效",
+    pre="1. 搭建网络拓扑：AP--STA； 2. AP已运行DHCP服务器，IP pool：192.168.1/10~20；",
+)
+def test_Func_AdvWlanSet_Priorty_Excp_001(run_shell_cmd, wifi, wifi_yaml, wifi_case):
+    run_manual_placeholder(wifi_case, run_shell_cmd)
+
+@pytest.mark.p2
+@pytest.mark.wifi
+@pytest.mark.stress
+@pytest.mark.case_id("Func_AdvWlanSet_Priorty_Stb_001")
+@pytest.mark.wifi_case(
+    title="关机重启-WLAN等级配置不变",
+    pre="STA出厂状态",
+)
+def test_Func_AdvWlanSet_Priorty_Stb_001(
+    run_shell_cmd, wifi, wifi_yaml, settings_ui, capsys
+,
+    wifi_case):
+    run_wlan_priority_reboot_persistence_case(wifi, settings_ui, capsys)
+
+@pytest.mark.p2
+@pytest.mark.wifi
+@pytest.mark.stress
+@pytest.mark.case_id("Func_AdvWlanSet_Priorty_Stb_002")
+@pytest.mark.wifi_case(
+    title="WLAN开关启用/禁用-WLAN等级配置不变",
+    pre="STA出厂状态",
+)
+def test_Func_AdvWlanSet_Priorty_Stb_002(
+    run_shell_cmd, wifi, wifi_yaml, settings_ui, capsys
+,
+    wifi_case):
+    run_wlan_priority_settings_toggle_persistence_case(settings_ui, capsys)
+
+@pytest.mark.p2
+@pytest.mark.wifi
+@pytest.mark.stress
+@pytest.mark.case_id("Func_AdvWlanSet_Priorty_Stb_003")
+@pytest.mark.wifi_case(
+    title="快速设置栏禁用/启用-WLAN等级配置不变",
+    pre="STA出厂状态",
+)
+def test_Func_AdvWlanSet_Priorty_Stb_003(
+    run_shell_cmd, wifi, wifi_yaml, settings_ui, capsys
+,
+    wifi_case):
+    run_wlan_priority_quick_settings_toggle_persistence_case(settings_ui, capsys)
+
+@pytest.mark.p2
+@pytest.mark.wifi
+@pytest.mark.stress
+@pytest.mark.case_id("Func_AdvWlanSet_Priorty_Stb_004")
+@pytest.mark.wifi_case(
+    title="飞行模式禁用/启用-WLAN等级配置不变",
+    pre="STA出厂状态",
+)
+def test_Func_AdvWlanSet_Priorty_Stb_004(
+    run_shell_cmd, wifi, wifi_yaml, settings_ui, capsys
+,
+    wifi_case):
+    run_wlan_priority_airplane_toggle_persistence_case(settings_ui, capsys)
